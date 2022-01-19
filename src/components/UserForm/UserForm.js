@@ -1,108 +1,69 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 export default function RecipeForm(props) {
-  const {
-    handleSubmit,
-    handleChange,
-    errors,
-    fields,
-    signup,
-    editUser,
-    isValid,
-    buttonType,
-    goBack,
-  } = props;
+  const { form, handleChange, handleSubmit } = props;
+const history = useHistory()
 
-  return (
-    <div className="m-6">
-      <div className="flex mx-auto flex-col shadow-2xl rounded-lg max-w-5xl p-3 sm:p-6">
-        <form className="space-y-4" onSubmit={(event) => handleSubmit(event)}>
-          {(signup || editUser) && (
-            <div className="flex flex-col">
-              <label className="labels" htmlFor="username">
-                Username:
-              </label>
-              <input
-                className="inputs sm:text-md"
-                type="text"
-                name="username"
-                value={fields.username}
-                onChange={(event) => handleChange(event)}
-              />
-              {errors.username && (
-                <p className="errorInputs sm:text-md">{errors.username}</p>
-              )}
-            </div>
-          )}
-
-          {editUser && (
-            <div className="flex flex-col">
-              <label className="labels" htmlFor="photo">
-                Photo:
-              </label>
-              <input
-                className="inputs sm:text-md"
-                type="text"
-                name="photo"
-                value={fields.photo}
-                onChange={(event) => handleChange(event)}
-              />
-              {errors.photo && (
-                <p className="errorInputs sm:text-md">{errors.photo}</p>
-              )}
-            </div>
-          )}
-
-          <div className="flex flex-col">
-            <label className="labels" htmlFor="email">
-              Email:
-            </label>
-            <input
-              className="inputs sm:text-md"
-              type="text"
-              name="email"
-              value={fields.email}
-              onChange={(event) => handleChange(event)}
-            />
-            {errors.email && (
-              <p className="errorInputs sm:text-md">{errors.email}</p>
-            )}
-          </div>
-
-          <div className="flex flex-col">
-            <label className="labels" htmlFor="password">
-              Password:
-            </label>
-            <input
-              className="inputs sm:text-md"
-              type="password"
-              name="password"
-              value={fields.password}
-              onChange={(event) => handleChange(event)}
-            />
-            {errors.password && (
-              <p className="errorInputs sm:text-md">{errors.password}</p>
-            )}
-          </div>
-
-          <div className="text-center space-x-6">
-            <button
-              className="cursor-pointer shadow-md bg-green-800 mt-4 px-4 py-1 text-center hover:scale-105 transition transform duration-200 ease-out active:scale-95 text-white rounded-lg"
-              disabled={!isValid()}
-              type="submit"
-            >
-              {buttonType}
-            </button>
-            <button
-              onClick={() => goBack()}
-              className="cursor-pointer shadow-md bg-red-800 mt-4 px-4 py-1 text-center hover:scale-105 transition transform duration-200 ease-out active:scale-95 text-white rounded-lg"
-              type="submit"
-            >
-              Back
-            </button>
-          </div>
-        </form>
-      </div>
+return (
+  <div>
+    <div className="flex flex-col bg-blue-200 m-10 shadow-lg space-y-4 rounded-lg p-5">
+      <form
+        className="flex flex-col p-5 space-y-3 bg-gray-100 rounded-lg"
+        onSubmit={handleSubmit}
+      >
+        <div className="flex justify-end">
+          <label className="font-bold text-yellow-800" htmlFor="user">
+            User:{" "}
+          </label>
+          <input
+            className="text-yellow-800 outline-0 ml-2 rounded-lg px-2"
+            type="text"
+            name="user"
+            value={form.user}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="flex justify-start w-full">
+          <label className="font-bold text-yellow-800" htmlFor="email">
+            Email:{" "}
+          </label>
+          <input
+            className="text-yellow-800 ml-2 outline-0 rounded-lg px-2 flex-grow"
+            type="text"
+            name="title"
+            value={form.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="flex justify-start w-full">
+          <label className="font-bold text-yellow-800" htmlFor="password">
+            Password:{" "}
+          </label>
+          <input
+            className="text-yellow-800 ml-2 outline-0 rounded-lg px-2 flex-grow"
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="flex justify-between">
+          <button
+            className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-green-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
+            type="submit"
+          >
+            Update
+          </button>
+          <button
+            className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-red-800 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
+            onClick={() => history.push(`/${form.id}`)}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
-  );
+  </div>
+);
 }

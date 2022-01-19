@@ -1,43 +1,59 @@
-/* eslint-disable @next/next/link-passhref */
-import Link from "next/link";
+import React from "react";
 import moment from "moment";
 import { StarIcon, CheckIcon } from "@heroicons/react/solid";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import NoteService from "../../services/note.service";
+import { withAuth } from "../../context/auth.context";
+import { Link, withRouter, useHistory } from "react-router-dom";
 
-export default function ToDoCard({ title, id, priority, done, dueDate }) {
+function NoteCard({ title, id, priority, done, dueDate }) {
 
   const [isPriority, setIsPriority] = useState(priority);
   const [isDone, setIsDone] = useState(done);
 
-  const router = useRouter();
+  const history = useHistory();
+  const noteService = new NoteService()
 
-  const deleteToDo = async () => {
+  const deleteNote = async () => {
     try {
-      await fetch(`http://localhost:3000/api/todos/${id}`, {
-        method: "DELETE",
-      });
-      router.reload();
+      await noteService.deleteOne(id)
+      history.push("/");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const toggleOptions = async (keyType, option, setOption) => {
-    setOption((option = !option));
-    try {
-      await fetch(`http://localhost:3000/api/todos/${id}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ [keyType]: `${option}` }),
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const toggleDone = () => {
+    noteService.updateOne(id, setIsDone(!isDone))
+      .then(() => {
+        console.log('Updated');
+      })
+      .catch(err => console.error(err))
+  }
+
+  const togglePriority = () => {
+    noteService.updateOne(id, setIsPriority(!isPriority))
+      .then(() => {
+        console.log('Updated');
+      })
+      .catch(err => console.error(err))
+  }
+
+  // const toggleOptions = async (keyType, option, setOption) => {
+  //   setOption((option = !option));
+  //   try {
+  //     await fetch(`http://localhost:3000/api/todos/${id}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-type": "application/json",
+  //       },
+  //       body: JSON.stringify({ [keyType]: `${option}` }),
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="flex cursor-pointer justify-start w-80 mx-5 bg-gray-300 shadow-lg hover:shadow-xl hover:bg-blue-200 m-3 rounded-lg p-2">
@@ -52,7 +68,7 @@ export default function ToDoCard({ title, id, priority, done, dueDate }) {
           <div className="flex">
             <p
               onClick={() =>
-                toggleOptions("priority", isPriority, setIsPriority)
+                togglePriority()
               }
             >
               {isPriority ? (
@@ -61,7 +77,7 @@ export default function ToDoCard({ title, id, priority, done, dueDate }) {
                 <StarIcon className="h-5 text-gray-400" />
               )}
             </p>
-            <p onClick={() => toggleOptions("done", isDone, setIsDone)}>
+            <p onClick={() => toggleDone()}>
               {isDone ? (
                 <CheckIcon className="h-5 text-green-600" />
               ) : (
@@ -77,9 +93,14 @@ export default function ToDoCard({ title, id, priority, done, dueDate }) {
           </div>
         </Link>
         {isDone && <button className="shadow-md items-center text-white text-center justify-center px-6 hover:shadow-xl bg-red-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
- onClick={deleteToDo}>Delete</button>}
+ onClick={deleteNote}>Delete</button>}
  </div>
       </div>
     </div>
   );
 }
+// withRouter allow us to use history.push
+
+// withAuth comes from context and alow the component to use it
+// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
+export default withAuth(withRouter(NoteCard));
