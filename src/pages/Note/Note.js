@@ -10,18 +10,19 @@ function Note(props) {
   // and wrap all the aplication in its root index.js
 
   const [note, setNote] = useState();
+  const id = props.match.params.id
 
 
   // useEffect is the first method to execute in a component
   useEffect(() => {
     const noteService = new NoteService();
     noteService
-      .getOne(props.match.params.id)
+      .getOne(id)
       .then((res) => {
         setNote({ note: res.data });
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [id]);
 
   return (
     <div>
@@ -33,6 +34,7 @@ function Note(props) {
     </div>
   );
 }
+// withRouter allow us to use history.push
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit

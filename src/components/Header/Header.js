@@ -13,7 +13,7 @@ function Header(props) {
   return (
     <nav>
       <div className="p-5 bg-blue-400 text-white flex justify-between">
-        <Link href="/">
+        <Link to="/">
           <div className="cursor-pointer flex space-x-2 items-center justify-start mr-6">
             <BookOpenIcon className="h-10" />
             <p>To Do App</p>
@@ -25,7 +25,6 @@ function Header(props) {
               <p className="font-bold sm:text-xl text-md">Hello {user.name}</p>
               <img src={user.image} alt="User photo" className="flex justify-center w-10 h-10 overflow-hidden items-center rounded-full" />
             </Link>
-
             <div
               onClick={logout}
               className="cursor-pointer flex space-x-2 items-center"
@@ -35,7 +34,6 @@ function Header(props) {
           </div>
         ) : (
           <div className="text-gray-200 flex items-center text-right text-xs sm:text-sm space-x-6 mr-4 whitespace-nowrap">
-            <Link to="/login">
               <div className="cursor-pointer">
                 <Link to="/login">
                   <p className="font-bold">LogIn</p>
@@ -44,13 +42,12 @@ function Header(props) {
                   <p className="sm:text-sm">SignIn</p>
                 </Link>
               </div>
-            </Link>
           </div>
         )}
       </div>
       {user && (
         <div className="bg-gray-300 p-3 flex justify-center">
-          <Link href="/createToDos">
+          <Link to="/createToDos">
             <button className="cursor-pointer shadow-md items-center pb-1 text-white text-center justify-center px-6 hover:bg-green-800 font-bold hover:shadow-xl bg-green-700 hover:scale-105 transition transform duration-200 ease-out active:scale-90 rounded-lg ">
               Create To Do
             </button>

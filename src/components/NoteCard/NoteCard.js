@@ -6,38 +6,44 @@ import NoteService from "../../services/note.service";
 import { withAuth } from "../../context/auth.context";
 import { Link, withRouter, useHistory } from "react-router-dom";
 
-function NoteCard({ title, id, priority, done, dueDate }) {
+function NoteCard(props) {
+  
+const { title, id, priority, done, dueDate, user } = props
 
   const [isPriority, setIsPriority] = useState(priority);
   const [isDone, setIsDone] = useState(done);
 
   const history = useHistory();
-  const noteService = new NoteService()
+  const noteService = new NoteService();
 
   const deleteNote = async () => {
     try {
-      await noteService.deleteOne(id)
+      await noteService.deleteOne(id);
       history.push("/");
     } catch (error) {
       console.log(error);
     }
   };
 
+ console.log(props)
+
   const toggleDone = () => {
-    noteService.updateOne(id, setIsDone(!isDone))
+    noteService
+      .updateOne(id, setIsDone(!isDone))
       .then(() => {
-        console.log('Updated');
+        console.log("Updated");
       })
-      .catch(err => console.error(err))
-  }
+      .catch((err) => console.error(err));
+  };
 
   const togglePriority = () => {
-    noteService.updateOne(id, setIsPriority(!isPriority))
+    noteService
+      .updateOne(id, setIsPriority(!isPriority))
       .then(() => {
-        console.log('Updated');
+        console.log("Updated");
       })
-      .catch(err => console.error(err))
-  }
+      .catch((err) => console.error(err));
+  };
 
   // const toggleOptions = async (keyType, option, setOption) => {
   //   setOption((option = !option));
@@ -66,11 +72,7 @@ function NoteCard({ title, id, priority, done, dueDate }) {
             {moment(new Date(dueDate)).format("MMM-yyyy")}
           </p>
           <div className="flex">
-            <p
-              onClick={() =>
-                togglePriority()
-              }
-            >
+            <p onClick={() => togglePriority()}>
               {isPriority ? (
                 <StarIcon className="h-5 text-yellow-500" />
               ) : (
@@ -87,14 +89,20 @@ function NoteCard({ title, id, priority, done, dueDate }) {
           </div>
         </div>
         <div className="flex justify-between">
-        <Link href={`/${id}`}>
-          <div>
-            <h2 className="text-md text-yellow-800 sm:text-lg">{title}</h2>
-          </div>
-        </Link>
-        {isDone && <button className="shadow-md items-center text-white text-center justify-center px-6 hover:shadow-xl bg-red-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
- onClick={deleteNote}>Delete</button>}
- </div>
+          <Link to={`/notes/${id}`}>
+            <div>
+              <h2 className="text-md text-yellow-800 sm:text-lg">{title}</h2>
+            </div>
+          </Link>
+          {isDone && (
+            <button
+              className="shadow-md items-center text-white text-center justify-center px-6 hover:shadow-xl bg-red-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
+              onClick={deleteNote}
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

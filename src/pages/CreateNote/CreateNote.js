@@ -77,6 +77,7 @@ function CreateNote(props) {
     </div>
   );
 }
+// withRouter allow us to use history.push
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
