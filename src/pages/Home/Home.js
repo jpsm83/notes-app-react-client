@@ -1,24 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NoteCard from "../../components/NotesCard/NotesCard";
 import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
 import { withRouter } from "react-router-dom";
 
-
 function Home(props) {
-
-    // user and logout come from context/auth.context.js
+  // user and logout come from context/auth.context.js
   // it can be use in any component because it is exported as AuthProvider
   // and wrap all the aplication in its root index.js
   const { user } = props;
 
-  const [notes, setNotes] = useState()
-
-  const noteService = new NoteService();
+  const [notes, setNotes] = useState();
 
 
-  // componentDidMount is the first method to execute in a component
-  const componentDidMount = () => {
+  // useEffect is the first method to execute in a component
+  useEffect(() => {
+    const noteService = new NoteService();
     // get the user in seccion with withAuth user.id
     noteService
       .get()
@@ -26,8 +23,7 @@ function Home(props) {
         setNotes({ notes: res.data });
       })
       .catch((err) => console.error(err));
-  }
-
+  }, []);
 
   const displayNoteCards = () => {
     // you cant use .sort() in a object - first change it to an ARRAY
@@ -37,25 +33,25 @@ function Home(props) {
       (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
     );
 
-  //   return organizedNotes.map((note) => {
-  //     // if (note.user === props.user.id) {
-  //     // if (note.user === props.match.params.email) {
-  //     // if (note.user === session.data.user.email) {
-  //       return <NoteCard key={note.id} {...note} />;
-  //     }
-  //   });
-  // };
+    //   return organizedNotes.map((note) => {
+    //     // if (note.user === props.user.id) {
+    //     // if (note.user === props.match.params.email) {
+    //     // if (note.user === session.data.user.email) {
+    //       return <NoteCard key={note.id} {...note} />;
+    //     }
+    //   });
+    // };
 
-  return organizedNotes.map((note) => {
-    <NoteCard key={note.id} {...note} />;
-    })
-  }
+    return organizedNotes.map((note) => {
+      return <NoteCard key={note.id} {...note} />;
+    });
+  };
 
   // this function is working properly
   // DONT TOUCH
-  function sortByChoosen(sortType) {
-    return (a, b) => b[sortType] - a[sortType];
-  }
+  // function sortByChoosen(sortType) {
+  //   return (a, b) => b[sortType] - a[sortType];
+  // }
 
   return (
     <div>

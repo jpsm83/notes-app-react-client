@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
@@ -9,11 +10,11 @@ function EditUser(props) {
   const [buttonType] = useState("Update");
   const history = useHistory();
 
-  // componentDidMount is the first method to execute in a component
-  const componentDidMount = () => {
+  // useEffect is the first method to execute in a component
+  useEffect(() => {
     // props.user comes from context/auth.context.js - withAuth
     setForm({ form: props.user });
-  };
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault();

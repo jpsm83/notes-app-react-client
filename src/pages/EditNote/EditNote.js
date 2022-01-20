@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import NoteService from "../../services/note.service";
 import NoteForm from "../../components/NoteForm/NoteForm";
 
-function EditRecipe(props) {
+function EditNote(props) {
   const [form, setForm] = useState({ props });
   const [errors, setErrors] = useState(null);
   const [buttonType] = useState("Update");
@@ -14,16 +15,17 @@ function EditRecipe(props) {
   // note.service.js is the bridge to connect frontend with backend
   const noteService = new NoteService();
 
-  // componentDidMount is the first method to execute in a component
-  const componentDidMount = () => {
+  // useEffect is the first method to execute in a component
+  useEffect(() => {
     const id = props.match.params.id;
-    noteService.getOne(id);
-    try {
-      setForm({ form: res.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    noteService.getOne(id).then(() => {
+      try {
+        setForm({ form: res.data });
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  }, [])
 
   //   const componentDidMount = () => {
   //     const id = props.match.params.id;
@@ -36,12 +38,12 @@ function EditRecipe(props) {
   //   .catch(err => console.error(err))
   // }
 
-  const handleSubmit = (event) => {
+  function handleSubmit(event) {
     event.preventDefault();
     let errs = validate();
     setErrors(errs);
     updateNote();
-  };
+  }
 
   const updateNote = () => {
     const id = props.match.params.id;
@@ -109,4 +111,4 @@ function EditRecipe(props) {
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withRouter(EditRecipe);
+export default withRouter(EditNote);
