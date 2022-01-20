@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <div className="flex wrap w-full justify-evenly items-center bg-gray-200">
+    <div className="flex sticky botton-0 z-50 wrap w-full justify-evenly items-center bg-gray-200">
       <div className="footTag sm:text-md">
         <h4 className="font-bold mb-4">About</h4>
         <ul>

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import NoteCard from "../../components/NoteCard/NoteCard";
 import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
-import { withRouter } from "react-router-dom";
 
 class Home extends Component {
   constructor(props) {
@@ -17,30 +16,37 @@ class Home extends Component {
 
   // componentDidMount is the first method to execute in a component
   componentDidMount() {
+    this.refreshState();
+  }
+
+  refreshState() {
     this.noteService
       .get()
-      .then((res) => {
-        this.setState({ notes: res.data });
+      .then((response) => {
+        // axios gives the response in '.data'
+        console.log(response.data);
+        this.setState({ notes: response.data });
       })
       .catch((err) => console.error(err));
   }
 
   displayNoteCards() {
+    const userId = this.props.user.id;
     let organizedNotes = [...this.state.notes].sort(
       (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
     );
     return organizedNotes.map((note) => {
-      return (
-        <NoteCard
-          key={note.id + Math.floor(Math.random() * 10000000)}
-          {...note}
-        />
-      );
+      if (note.username === userId) {
+        return (
+          <NoteCard
+            key={note.id + Math.floor(Math.random() * 100000000)}
+            {...note} refreshState={() => this.refreshState()}
+          />
+        );
+      }
     });
   }
 
-  // this function is working properly
-  // DONT TOUCH
   // function sortByChoosen(sortType) {
   //   return (a, b) => b[sortType] - a[sortType];
   // }

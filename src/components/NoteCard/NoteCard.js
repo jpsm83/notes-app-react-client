@@ -1,65 +1,47 @@
 import React from "react";
 import moment from "moment";
 import { StarIcon, CheckIcon } from "@heroicons/react/solid";
-import { useState } from "react";
 import NoteService from "../../services/note.service";
 import { withAuth } from "../../context/auth.context";
-import { Link, withRouter, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function NoteCard(props) {
-  
-const { title, id, priority, done, dueDate, user } = props
-
-  const [isPriority, setIsPriority] = useState(priority);
-  const [isDone, setIsDone] = useState(done);
-
-  const history = useHistory();
+function NoteCard({ title, done, priority, id, dueDate, refreshState }) {
   const noteService = new NoteService();
 
-  const deleteNote = async () => {
-    try {
-      await noteService.deleteOne(id);
-      history.push("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
- console.log(props)
-
-  const toggleDone = () => {
+  const deleteNote = () => {
     noteService
-      .updateOne(id, setIsDone(!isDone))
+      .deleteOne(id)
       .then(() => {
-        console.log("Updated");
+        refreshState();
       })
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const togglePriority = () => {
     noteService
-      .updateOne(id, setIsPriority(!isPriority))
+      .updateOne(id, { priority: !priority })
       .then(() => {
-        console.log("Updated");
+        console.log("priority updated");
+        refreshState();
       })
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  // const toggleOptions = async (keyType, option, setOption) => {
-  //   setOption((option = !option));
-  //   try {
-  //     await fetch(`http://localhost:3000/api/todos/${id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-type": "application/json",
-  //       },
-  //       body: JSON.stringify({ [keyType]: `${option}` }),
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const toggleDone = () => {
+    noteService
+      .updateOne(id, { done: !done })
+      .then(() => {
+        console.log("done updated");
+        refreshState();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div className="flex cursor-pointer justify-start w-80 mx-5 bg-gray-300 shadow-lg hover:shadow-xl hover:bg-blue-200 m-3 rounded-lg p-2">
@@ -73,14 +55,14 @@ const { title, id, priority, done, dueDate, user } = props
           </p>
           <div className="flex">
             <p onClick={() => togglePriority()}>
-              {isPriority ? (
+              {priority ? (
                 <StarIcon className="h-5 text-yellow-500" />
               ) : (
                 <StarIcon className="h-5 text-gray-400" />
               )}
             </p>
             <p onClick={() => toggleDone()}>
-              {isDone ? (
+              {done ? (
                 <CheckIcon className="h-5 text-green-600" />
               ) : (
                 <CheckIcon className="h-5 text-gray-400" />
@@ -89,12 +71,12 @@ const { title, id, priority, done, dueDate, user } = props
           </div>
         </div>
         <div className="flex justify-between">
-          <Link to={`/notes/${id}`}>
+          <Link to={`/note/${id}`}>
             <div>
               <h2 className="text-md text-yellow-800 sm:text-lg">{title}</h2>
             </div>
           </Link>
-          {isDone && (
+          {done && (
             <button
               className="shadow-md items-center text-white text-center justify-center px-6 hover:shadow-xl bg-red-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
               onClick={deleteNote}
@@ -107,8 +89,7 @@ const { title, id, priority, done, dueDate, user } = props
     </div>
   );
 }
-// withRouter allow us to use history.push
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(withRouter(NoteCard));
+export default withAuth(NoteCard);

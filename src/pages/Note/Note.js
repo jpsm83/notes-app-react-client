@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import NoteDetail from "../../components/NoteDetail/NoteDetail";
 import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
-import { withRouter } from "react-router-dom";
 
-function Note(props) {
-  // user and logout come from context/auth.context.js
-  // it can be use in any component because it is exported as AuthProvider
-  // and wrap all the aplication in its root index.js
+class Note extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      note: "",
+    };
+    this.noteService = new NoteService();
+  }
 
-  const [note, setNote] = useState();
-  const id = props.match.params.id
 
-
-  // useEffect is the first method to execute in a component
-  useEffect(() => {
-    const noteService = new NoteService();
-    noteService
-      .getOne(id)
+  // componentDidMount is the first method to execute in a component
+  componentDidMount() {
+    this.noteService
+      .getOne(this.props.match.params.id)
       .then((res) => {
-        setNote({ note: res.data });
+        this.setState({ note: res.data });
       })
       .catch((err) => console.error(err));
-  }, [id]);
+  }
 
+  render(){
   return (
     <div>
       <main className="flex max-w-7xl mx-auto mt-3">
         <div className="flex flex-col w-full">
-          <NoteDetail {...note} />
+          <NoteDetail {...this.state.note} />
         </div>
       </main>
     </div>
   );
 }
-// withRouter allow us to use history.push
+}
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(withRouter(Note));
+export default withAuth(Note)

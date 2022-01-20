@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 import { userValidators } from "../../components/Validators/Validators";
@@ -7,19 +6,18 @@ import { userValidators } from "../../components/Validators/Validators";
 class Login extends Component {
   constructor(props) {
     super(props);
-  this.state = {
-    fields: {
-      email: "",
-      password: "",
-    },
-    buttonType: "Login",
-    errors: {
-      email: null,
-      password: null,
-    },
-  };
+    this.state = {
+      fields: {
+        email: "",
+        password: "",
+      },
+      buttonType: "Login",
+      errors: {
+        email: null,
+        password: null,
+      },
+    };
   }
-
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -28,7 +26,7 @@ class Login extends Component {
       this.props.login(this.state.fields);
       this.props.history.push("/");
     }
-  }
+  };
 
   handleChange(event) {
     const { name, value } = event.target;
@@ -53,23 +51,22 @@ class Login extends Component {
     this.props.history.push("/");
   };
 
-  render(){
-  return (
-    <div className="flex justify-center">
-      <UserForm
+  render() {
+    return (
+      <div className="flex justify-center">
+        <UserForm
           isValid={() => this.isValid()}
-        handleSubmit={(e) => this.handleSubmit(e)}
-        handleChange={(e) => this.handleChange(e)}
-        buttonType={this.buttonType}
-        {...this.state}
-      />
-      <button onClick={() => this.goBack()}>Back</button>
-    </div>
-  );
+          handleSubmit={(e) => this.handleSubmit(e)}
+          handleChange={(e) => this.handleChange(e)}
+          buttonType={this.buttonType}
+          {...this.state}
+        />
+        <button onClick={() => this.goBack()}>Back</button>
+      </div>
+    );
+  }
 }
-}
-// withRouter allow us to use history.push
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(withRouter(Login));
+export default withAuth(Login);

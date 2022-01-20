@@ -1,19 +1,18 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { withAuth } from "../../context/auth.context";
 
-export default function UserForm(props) {
+function UserForm(props) {
   const {
     handleSubmit,
     handleChange,
     errors,
     fields,
     signup,
-    editUser,
+    edit,
+    login,
     isValid,
     buttonType,
   } = props;
-
-  const history = useHistory();
 
   return (
     <div>
@@ -22,7 +21,7 @@ export default function UserForm(props) {
           className="flex flex-col p-5 space-y-3 bg-gray-100 rounded-lg"
           onSubmit={handleSubmit}
         >
-          {(signup || editUser) && (
+          {(!login && signup || edit) && (
           <div className="flex justify-start w-full">
             <label className="font-bold text-yellow-800" htmlFor="username">
               Username:{" "}
@@ -79,7 +78,7 @@ export default function UserForm(props) {
             </button>
             <button
               className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-red-800 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
-              onClick={() => history.push("/")}
+              onClick={() => props.history.push("/")}
             >
               Cancel
             </button>
@@ -89,3 +88,7 @@ export default function UserForm(props) {
     </div>
   );
 }
+
+// withAuth comes from context and alow the component to use it
+// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
+export default withAuth(UserForm);

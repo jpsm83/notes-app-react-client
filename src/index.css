@@ -16,7 +16,7 @@
         @apply text-xs sm:text-sm font-bold text-gray-500 mb-1
     },
     .inputs {
-        @apply text-sm px-4 text-gray-600 cursor-text bg-yellow-100 hover:bg-yellow-300 p-1 w-full flex-grow rounded-md focus:outline-none
+        @apply text-sm px-4 text-gray-600 cursor-text bg-yellow-100 p-1 w-full flex-grow rounded-md focus:outline-none
     },
     .errorInputs {
         @apply text-sm text-red-700

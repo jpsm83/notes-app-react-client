@@ -8,7 +8,6 @@ export default class NoteService {
       baseURL: `${process.env.REACT_APP_API_URL}/notes`,
       // withCredentials=true create cookies so cors (server) can reconize with user is in session
       withCredentials: true,
-      
     });
   }
 

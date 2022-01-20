@@ -1,84 +1,86 @@
-import React, { useState } from "react";
-import { withRouter, useHistory } from "react-router-dom";
+import React, { Component } from "react";
+import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
 import NoteForm from "../../components/NoteForm/NoteForm";
+import { noteValidators } from "../../components/Validators/Validators";
 
-function CreateNote(props) {
-  const [form, setForm] = useState({ props });
-  const [errors, setErrors] = useState(null);
-  const [buttonType] = useState("Create");
-  const history = useHistory();
+class CreateNote extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fields: {
+        title: "",
+        dueDate: "",
+        description: "",
+      },
+      buttonType: "Create",
+      errors: {
+        title: null,
+        dueDate: null,
+        description: null,
+      },
+    };
+    // connection with NoteService to be able to use all it services
+    // note.service.js is the bridge to connect frontend with backend
+    this.noteService = new NoteService();
+  }
 
-  // connection with NoteService to be able to use all it services
-  // note.service.js is the bridge to connect frontend with backend
-  const noteService = new NoteService();
-
-  const handleSubmit = (event) => {
+  handleSubmit(event) {
     event.preventDefault();
-    let errs = validate();
-    setErrors(errs);
-    createNote();
-  };
+    if (this.isValid()) {
+      this.createNote();
+    }
+  }
 
-  const createNote = () => {
-    if (Object.keys(errors).length === 0) {
-      try {
-        noteService.create(form);
-
+  createNote() {
+    console.log(this.state.fields);
+    this.noteService
+      .create(this.state.fields)
+      .then(() => {
         console.log("created");
-        history.push("/");
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+      })
+      .catch((error) => console.log(error));
+      this.props.history.push("/");
+  }
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({
+      fields: {
+        ...this.state.fields,
+        [name]: value,
+      },
+      errors: {
+        ...this.state.errors,
+        [name]: noteValidators[name](value),
+      },
     });
-    setErrors({ ...errors, [e.target.name]: e.target.value });
+  }
+
+  isValid() {
+    const { errors } = this.state;
+    return !Object.keys(errors).some((key) => errors[key]);
+  }
+
+  goBack = () => {
+    this.props.history.push("/");
   };
 
-  const validate = () => {
-    let err = {};
-    if (!form.title) {
-      err.title = "Title is required";
-    }
-    if (!form.description) {
-      err.description = "Description is required";
-    }
-    if (!form.dueDate || form.dueDate < Date.now()) {
-      err.dueDate = "Due date is required";
-    }
-    return err;
-  };
-
-  // isValid() {
-  //   const { errors } = this.state;
-  //   return !Object.keys(errors).some((key) => errors[key]);
-  // }
-
-  const goBack = () => {
-    history.push("/");
-  };
-
-  return (
-    <div className="flex justify-center">
-      <NoteForm
-        // isValid={() => isValid()}
-        handleSubmit={(e) => handleSubmit(e)}
-        handleChange={(e) => handleChange(e)}
-        buttonType={buttonType}
-        {...form}
-      />
-      <button onClick={() => goBack()}>Back</button>
-    </div>
-  );
+  render() {
+    return (
+      <div className="flex justify-center">
+        <NoteForm
+          isValid={() => this.isValid()}
+          handleSubmit={(e) => this.handleSubmit(e)}
+          handleChange={(e) => this.handleChange(e)}
+          buttonType={this.buttonType}
+          {...this.state}
+        />
+      </div>
+    );
+  }
 }
-// withRouter allow us to use history.push
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withRouter(CreateNote);
+export default withAuth(CreateNote);

@@ -1,80 +1,74 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import { withRouter, useHistory } from "react-router-dom";
+import React, { Component } from "react";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
+import { userValidators } from "../../components/Validators/Validators";
 
-function EditUser(props) {
-  const [form, setForm] = useState({ props });
-  const [errors, setErrors] = useState(null);
-  const [buttonType] = useState("Update");
-  const history = useHistory();
+class EditUser extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fields: {
+        username: "",
+        email: "",
+        password: "",
+      },
+      buttonType: "Update",
+      errors: {
+        username: null,
+        email: null,
+        password: null,
+      },
+    };
+  }
 
-  // useEffect is the first method to execute in a component
-  useEffect(() => {
-    // props.user comes from context/auth.context.js - withAuth
-    setForm({ form: props.user });
-  }, [])
-
-  const handleSubmit = (event) => {
+  handleSubmit(event) {
     event.preventDefault();
-    let errs = validate();
-    setErrors(errs);
-    if (!errors) {
+    if (this.isValid()) {
       // props.edit comes from context/auth.context.js - withAuth
-      props.edit(form);
-      goBack();
+      this.props.edit(this.state.fields);
+      this.goBack();
     }
-  };
+  }
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
+  handleChange(event) {
+    const { name, value } = event.target;
+    this.setState({
+      fields: {
+        ...this.state.fields,
+        [name]: value,
+      },
+      errors: {
+        ...this.state.errors,
+        [name]: userValidators[name](value),
+      },
     });
-    setErrors({ ...errors, [e.target.name]: e.target.value });
+  }
+
+  isValid() {
+    const { errors } = this.state;
+    return !Object.keys(errors).some((key) => errors[key]);
+  }
+
+  goBack() {
+    this.props.history.push("/");
   };
 
-  const validate = () => {
-    let err = {};
-    if (!form.user) {
-      err.user = "user is required";
-    }
-    if (!form.email) {
-      err.email = "email is required";
-    }
-    if (!form.password) {
-      err.password = "Password is required";
-    }
-    return err;
-  };
-
-  // isValid() {
-  //   const { errors } = this.state;
-  //   return !Object.keys(errors).some((key) => errors[key]);
-  // }
-
-  const goBack = () => {
-    history.push("/");
-  };
-
-  // componentDidMount()
-
+  render(){
   return (
     <div className="flex justify-center">
       <UserForm
-        // isValid={() => isValid()}
-        handleSubmit={(e) => handleSubmit(e)}
-        handleChange={(e) => handleChange(e)}
-        buttonType={buttonType}
-        {...form}
+        isValid={() => this.isValid()}
+        handleSubmit={(e) => this.handleSubmit(e)}
+        handleChange={(e) => this.handleChange(e)}
+        buttonType={this.buttonType}
+        {...this.state}
       />
-      <button onClick={() => goBack()}>Back</button>
     </div>
   );
 }
-// withRouter allow us to use history.push
+}
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(withRouter(EditUser));
+export default withAuth(EditUser);
