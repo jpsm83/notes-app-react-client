@@ -1,32 +1,59 @@
+/* eslint-disable no-undef */
 import React, { useState } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import NoteService from "../../services/note.service";
 import NoteForm from "../../components/NoteForm/NoteForm";
 
-function CreateNote(props) {
+function EditRecipe(props) {
   const [form, setForm] = useState({ props });
   const [errors, setErrors] = useState(null);
-  const [buttonType] = useState("Create");
+  const [buttonType] = useState("Update");
   const history = useHistory();
 
   // connection with NoteService to be able to use all it services
   // note.service.js is the bridge to connect frontend with backend
   const noteService = new NoteService();
 
+  // componentDidMount is the first method to execute in a component
+  const componentDidMount = () => {
+    const id = props.match.params.id;
+    noteService.getOne(id);
+    try {
+      setForm({ form: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //   const componentDidMount = () => {
+  //     const id = props.match.params.id;
+  //     noteService.getOne(id)
+  //   .then(response => {
+  //     // axios gives the response in '.data'
+  //     console.log(response.data);
+  //     setForm({ form: response.data });
+  //   })
+  //   .catch(err => console.error(err))
+  // }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     let errs = validate();
     setErrors(errs);
-    createNote();
+    updateNote();
   };
 
-  const createNote = () => {
+  const updateNote = () => {
+    const id = props.match.params.id;
+    const uploadData = form;
     if (Object.keys(errors).length === 0) {
       try {
-        noteService.create(form);
+        noteService.updateOne(id, uploadData);
 
-        console.log("created");
-        history.push("/");
+        console.log("updated");
+        // you need export the component withRouter to be able to use history.push
+
+        history.push(`/notes/${id}`);
       } catch (error) {
         console.log(error);
       }
@@ -64,10 +91,12 @@ function CreateNote(props) {
     history.push("/");
   };
 
+  // componentDidMount()
+
   return (
     <div className="flex justify-center">
       <NoteForm
-        // isValid={() => isValid()}
+        // isValid={() => this.isValid()}
         handleSubmit={(e) => handleSubmit(e)}
         handleChange={(e) => handleChange(e)}
         buttonType={buttonType}
@@ -80,4 +109,4 @@ function CreateNote(props) {
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withRouter(CreateNote);
+export default withRouter(EditRecipe);

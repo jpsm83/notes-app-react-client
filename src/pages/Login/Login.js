@@ -1,70 +1,68 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { userValidators } from "../../components/Validators/Validators";
+import React, { useState } from "react";
+import { withRouter, useHistory } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fields: {
-        email: "",
-        password: "",
-      },
-      buttonType: "Login",
-      errors: {
-        email: null,
-        password: null,
-      },
-    };
-  }
+function Login(props) {
+  const [form, setForm] = useState({ props });
+  const [errors, setErrors] = useState(null);
+  const [buttonType] = useState("Login");
+  const history = useHistory();
 
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (this.isValid()) {
+    let errs = validate();
+    setErrors(errs);
+    if (!errors) {
       // props.login comes from context/auth.context.js - withAuth
-      this.props.login(this.state.fields);
-      this.props.history.push("/");
+      props.login(this.state.fields);
+      history.push("/");
     }
-  }
+  };
 
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      fields: {
-        ...this.state.fields,
-        [name]: value,
-      },
-      errors: {
-        ...this.state.errors,
-        [name]: userValidators[name](value),
-      },
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
     });
-  }
+    setErrors({ ...errors, [e.target.name]: e.target.value });
+  };
 
-  isValid() {
-    const { errors } = this.state;
-    return !Object.keys(errors).some((key) => errors[key]);
-  }
+  const validate = () => {
+    let err = {};
+    if (!form.user) {
+      err.user = "user is required";
+    }
+    if (!form.email) {
+      err.email = "email is required";
+    }
+    if (!form.password) {
+      err.password = "Password is required";
+    }
+    return err;
+  };
 
-  goBack() {
-    this.props.history.push("/");
-  }
+  // isValid() {
+  //   const { errors } = this.state;
+  //   return !Object.keys(errors).some((key) => errors[key]);
+  // }
 
-  render() {
-    return (
-      <div className="flex justify-center">
-        <UserForm
-          goBack={() => this.goBack()}
-          isValid={() => this.isValid()}
-          handleSubmit={(e) => this.handleSubmit(e)}
-          handleChange={(e) => this.handleChange(e)}
-          {...this.state}
-        />
-      </div>
-    );
-  }
+  const goBack = () => {
+    history.push("/");
+  };
+
+  return (
+    <div className="flex justify-center">
+      <UserForm
+        // isValid={() => isValid()}
+        handleSubmit={(e) => handleSubmit(e)}
+        handleChange={(e) => handleChange(e)}
+        buttonType={buttonType}
+        {...form}
+      />
+      <button onClick={() => goBack()}>Back</button>
+    </div>
+  );
 }
 
 // withAuth comes from context and alow the component to use it
