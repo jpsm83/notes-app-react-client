@@ -16,7 +16,7 @@ class Home extends Component {
 
   // componentDidMount is the first method to execute in a component
   componentDidMount() {
-    this.refreshState()
+    this.refreshState();
   }
 
   refreshState() {
@@ -39,7 +39,8 @@ class Home extends Component {
         return (
           <NoteCard
             key={note.id + Math.floor(Math.random() * 100000000)}
-            {...note} refreshState={() => this.refreshState()}
+            {...note}
+            refreshState={() => this.refreshState()}
           />
         );
       }

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
 import NoteForm from "../../components/NoteForm/NoteForm";
 import { noteValidators } from "../../components/Validators/Validators";
-import { Redirect } from "react-router-dom";
 
-class CreateNote extends Component {
+export default class CreateNote extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +23,7 @@ class CreateNote extends Component {
     // note.service.js is the bridge to connect frontend with backend
     this.noteService = new NoteService();
   }
-  
+
   handleSubmit(event) {
     event.preventDefault();
     if (this.isValid()) {
@@ -37,10 +35,10 @@ class CreateNote extends Component {
     this.noteService
       .create(this.state.fields)
       .then(() => {
-        this.props.history.push("/")
+        this.props.history.push("/");
       })
       .catch((error) => console.log(error));
-      <Redirect to="/" />
+    this.props.history.push("/");
   }
 
   handleChange(e) {
@@ -69,14 +67,9 @@ class CreateNote extends Component {
           isValid={() => this.isValid()}
           handleSubmit={(e) => this.handleSubmit(e)}
           handleChange={(e) => this.handleChange(e)}
-          buttonType={this.buttonType}
           {...this.state}
         />
       </div>
     );
   }
 }
-
-// withAuth comes from context and alow the component to use it
-// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(CreateNote);

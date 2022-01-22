@@ -1,12 +1,14 @@
 import React from "react";
 import moment from "moment";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function NoteForm(props) {
+  const { fields, isValid, errors, handleChange, handleSubmit, buttonType } =
+    props;
 
-const { fields, isValid, errors, handleChange, handleSubmit, buttonType } = props;
-
-return (
+  const history = useHistory();
+  
+  return (
     <div>
       <div className="flex flex-col bg-blue-200 m-10 shadow-lg space-y-4 rounded-lg p-5">
         <form
@@ -68,7 +70,7 @@ return (
             </button>
             <button
               className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-red-800 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
-              onClick={() => <Redirect to={"/"} />}
+              onClick={() => history.push("/")}
             >
               Cancel
             </button>

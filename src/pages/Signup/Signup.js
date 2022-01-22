@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 import { userValidators } from "../../components/Validators/Validators";
@@ -28,9 +27,9 @@ class Signup extends Component {
     if (this.isValid()) {
       // props.signup comes from context/auth.context.js - withAuth
       this.props.signup(this.state.fields);
-      <Redirect to={"/"} />
+      this.props.history.push("/");
     }
-  }
+  };
 
   handleChange(event) {
     const { name, value } = event.target;
@@ -46,16 +45,16 @@ class Signup extends Component {
     });
   }
 
-
   isValid() {
     const { errors } = this.state;
     return !Object.keys(errors).some((key) => errors[key]);
   }
 
-  render(){
+  render() {
     return (
       <div className="flex justify-center">
         <UserForm
+          isValid={() => this.isValid()}
           handleSubmit={(e) => this.handleSubmit(e)}
           handleChange={(e) => this.handleChange(e)}
           {...this.state}
@@ -63,8 +62,8 @@ class Signup extends Component {
       </div>
     );
   }
-  }
+}
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(Signup)
+export default withAuth(Signup);

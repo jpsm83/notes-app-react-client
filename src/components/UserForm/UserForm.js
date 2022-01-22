@@ -1,13 +1,7 @@
 import React from "react";
 
 export default function UserForm(props) {
-  const {
-    handleSubmit,
-    handleChange,
-    errors,
-    fields,
-    buttonType,
-  } = props;
+  const { handleSubmit, handleChange, errors, fields, buttonType, isValid } = props;
 
   return (
     <div>
@@ -17,21 +11,21 @@ export default function UserForm(props) {
           onSubmit={handleSubmit}
         >
           {window.location.pathname.split("/").pop() !== "login" && (
-          <div className="flex justify-start w-full">
-            <label className="font-bold text-yellow-800" htmlFor="username">
-              Username:{" "}
+            <div className="flex justify-start w-full">
+              <label className="font-bold text-yellow-800" htmlFor="username">
+                Username:{" "}
               </label>
-            <input
-              className="text-yellow-800 ml-2 outline-0 rounded-lg px-2 flex-grow"
-              type="text"
-              value={fields.username}
-              name="username"
-              onChange={handleChange}
-            />
-            {errors.username && (
-              <p className="errorInputs sm:text-md">{errors.username}</p>
-            )}
-          </div>
+              <input
+                className="text-yellow-800 ml-2 outline-0 rounded-lg px-2 flex-grow"
+                type="text"
+                value={fields.username}
+                name="username"
+                onChange={handleChange}
+              />
+              {errors.username && (
+                <p className="errorInputs sm:text-md">{errors.username}</p>
+              )}
+            </div>
           )}
           <div className="flex justify-start w-full">
             <label className="font-bold text-yellow-800" htmlFor="email">
@@ -66,6 +60,7 @@ export default function UserForm(props) {
           <div className="flex justify-between">
             <button
               className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-green-700 hover:scale-105 transition transhtmlForm duration-200 ease-out rounded-lg"
+              disabled={!isValid()}
               type="submit"
             >
               {buttonType}

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
 import NoteForm from "../../components/NoteForm/NoteForm";
 import { noteValidators } from "../../components/Validators/Validators";
-import { Redirect } from "react-router-dom";
 
-class EditNote extends Component {
+export default class EditNote extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,14 +24,15 @@ class EditNote extends Component {
     this.noteService = new NoteService();
   }
 
-    componentDidMount() {
-      const id = this.props.match.params.id;
-      this.noteService.getOne(id)
-    .then(response => {
-      // axios gives the response in '.data'
-      this.setState({ fields: {...response.data} })
-    })
-    .catch((error) => console.log(error))
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    this.noteService
+      .getOne(id)
+      .then((response) => {
+        // axios gives the response in '.data'
+        this.setState({ fields: { ...response.data } });
+      })
+      .catch((error) => console.log(error));
   }
 
   handleSubmit(event) {
@@ -45,7 +44,7 @@ class EditNote extends Component {
 
   updateNote() {
     const id = this.props.match.params.id;
-    const uploadedData = this.state.fields
+    const uploadedData = this.state.fields;
     this.noteService
       .updateOne(id, uploadedData)
       .then(() => {
@@ -86,7 +85,3 @@ class EditNote extends Component {
     );
   }
 }
-
-// withAuth comes from context and alow the component to use it
-// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(EditNote);

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 import { userValidators } from "../../components/Validators/Validators";
@@ -25,7 +24,7 @@ class Login extends Component {
     if (this.isValid()) {
       // props.login comes from context/auth.context.js - withAuth
       this.props.login(this.state.fields);
-      <Redirect to={"/"} />
+      this.props.history.push("/");
     }
   };
 
@@ -52,6 +51,7 @@ class Login extends Component {
     return (
       <div className="flex justify-center">
         <UserForm
+          isValid={() => this.isValid()}
           handleSubmit={(e) => this.handleSubmit(e)}
           handleChange={(e) => this.handleChange(e)}
           {...this.state}

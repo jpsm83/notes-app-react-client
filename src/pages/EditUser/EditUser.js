@@ -27,7 +27,7 @@ class EditUser extends Component {
     if (this.isValid()) {
       // props.edit comes from context/auth.context.js - withAuth
       this.props.edit(this.state.fields);
-      this.goBack();
+      this.props.history.push("/");
     }
   }
 
@@ -50,23 +50,18 @@ class EditUser extends Component {
     return !Object.keys(errors).some((key) => errors[key]);
   }
 
-  goBack() {
-    this.props.history.push("/");
-  };
-
-  render(){
-  return (
-    <div className="flex justify-center">
-      <UserForm
-        isValid={() => this.isValid()}
-        handleSubmit={(e) => this.handleSubmit(e)}
-        handleChange={(e) => this.handleChange(e)}
-        buttonType={this.buttonType}
-        {...this.state}
-      />
-    </div>
-  );
-}
+  render() {
+    return (
+      <div className="flex justify-center">
+        <UserForm
+          isValid={() => this.isValid()}
+          handleSubmit={(e) => this.handleSubmit(e)}
+          handleChange={(e) => this.handleChange(e)}
+          {...this.state}
+        />
+      </div>
+    );
+  }
 }
 
 // withAuth comes from context and alow the component to use it

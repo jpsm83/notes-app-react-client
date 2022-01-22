@@ -3,22 +3,10 @@
 @tailwind utilities;
 
 @layer components {
-    .typesCousine {
-        @apply cursor-pointer shadow-md items-center pb-1 text-center justify-items-center px-4 hover:text-white hover:shadow-xl hover:scale-110 transition transform duration-200 ease-out active:scale-90 rounded-lg
-    },
     .anchorLink {
         @apply text-xs text-gray-600 font-sans
     },
     .footTag {
         @apply flex flex-col items-start my-10 text-sm flex-wrap
-    },
-    .labels {
-        @apply text-xs sm:text-sm font-bold text-gray-500 mb-1
-    },
-    .inputs {
-        @apply text-sm px-4 text-gray-600 cursor-text bg-yellow-100 p-1 w-full flex-grow rounded-md focus:outline-none
-    },
-    .errorInputs {
-        @apply text-sm text-red-700
     }
 }
