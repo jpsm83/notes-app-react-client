@@ -10,9 +10,8 @@ import AnounRoute from "./components/Routes/AnounRoute/AnounRoute";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
 import EditUser from "./pages/EditUser/EditUser";
-import { withAuth } from "./context/auth.context";
 
-function App() {
+export default function App() {
   return (
     <div>
       <Header />
@@ -31,7 +30,3 @@ function App() {
     </div>
   );
 }
-
-// withAuth comes from context and alow the component to use it
-// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(App);
