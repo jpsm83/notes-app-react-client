@@ -21,7 +21,7 @@ function Header(props) {
         </Link>
         {user ? (
           <div className="flex space-x-4 items-center justify-between">
-            <Link to={`/edit-user/${user.id}`}>
+            <Link className="flex space-x-4 items-center" to={`/edit-user/${user.id}`}>
               <p className="font-bold sm:text-xl text-md">
                 Hello {user.username}
               </p>

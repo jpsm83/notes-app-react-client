@@ -38,6 +38,14 @@ const userValidators = {
     return message;
   },
 
+  photo: (value) => {
+    let message;
+    if (!value) {
+      message = "Username is required";
+    }
+    return message;
+  },
+
   email: (value) => {
     let message;
     if (!value) {

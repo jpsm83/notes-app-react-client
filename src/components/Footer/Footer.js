@@ -55,7 +55,7 @@ export default function Footer() {
         </ul>
       </div>
       <div className="footTag sm:text-md">
-        <h4 className="font-bold mb-4">Food</h4>
+        <h4 className="font-bold mb-4">Notes</h4>
         <ul>
           <li>
             <Link className="anchorLink" to="">

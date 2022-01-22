@@ -12,12 +12,14 @@ class EditUser extends Component {
         username: "",
         email: "",
         password: "",
+        photo: ""
       },
       buttonType: "Update",
       errors: {
         username: null,
         email: null,
         password: null,
+        photo: null,
       },
     };
   }

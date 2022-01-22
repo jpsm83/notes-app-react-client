@@ -53,12 +53,14 @@ class Signup extends Component {
   render() {
     return (
       <div className="flex justify-center">
-        <UserForm
-          isValid={() => this.isValid()}
-          handleSubmit={(e) => this.handleSubmit(e)}
-          handleChange={(e) => this.handleChange(e)}
-          {...this.state}
-        />
+        <div className="m-10 flex flex-shrink">
+          <UserForm
+            isValid={() => this.isValid()}
+            handleSubmit={(e) => this.handleSubmit(e)}
+            handleChange={(e) => this.handleChange(e)}
+            {...this.state}
+          />
+        </div>
       </div>
     );
   }

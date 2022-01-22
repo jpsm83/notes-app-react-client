@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { Component } from "react";
 import NoteCard from "../../components/NoteCard/NoteCard";
 import { withAuth } from "../../context/auth.context";
