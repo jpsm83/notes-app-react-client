@@ -3,6 +3,7 @@ import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
 import NoteForm from "../../components/NoteForm/NoteForm";
 import { noteValidators } from "../../components/Validators/Validators";
+import { Redirect } from "react-router-dom";
 
 class CreateNote extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class CreateNote extends Component {
     // note.service.js is the bridge to connect frontend with backend
     this.noteService = new NoteService();
   }
-
+  
   handleSubmit(event) {
     event.preventDefault();
     if (this.isValid()) {
@@ -33,14 +34,13 @@ class CreateNote extends Component {
   }
 
   createNote() {
-    console.log(this.state.fields);
     this.noteService
       .create(this.state.fields)
       .then(() => {
-        console.log("created");
+        this.props.history.push("/")
       })
       .catch((error) => console.log(error));
-      this.props.history.push("/");
+      <Redirect to="/" />
   }
 
   handleChange(e) {
@@ -61,10 +61,6 @@ class CreateNote extends Component {
     const { errors } = this.state;
     return !Object.keys(errors).some((key) => errors[key]);
   }
-
-  goBack = () => {
-    this.props.history.push("/");
-  };
 
   render() {
     return (

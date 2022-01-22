@@ -1,16 +1,11 @@
 import React from "react";
-import { withAuth } from "../../context/auth.context";
 
-function UserForm(props) {
+export default function UserForm(props) {
   const {
     handleSubmit,
     handleChange,
     errors,
     fields,
-    signup,
-    edit,
-    login,
-    isValid,
     buttonType,
   } = props;
 
@@ -21,11 +16,11 @@ function UserForm(props) {
           className="flex flex-col p-5 space-y-3 bg-gray-100 rounded-lg"
           onSubmit={handleSubmit}
         >
-          {(!login && signup || edit) && (
+          {window.location.pathname.split("/").pop() !== "login" && (
           <div className="flex justify-start w-full">
             <label className="font-bold text-yellow-800" htmlFor="username">
               Username:{" "}
-            </label>
+              </label>
             <input
               className="text-yellow-800 ml-2 outline-0 rounded-lg px-2 flex-grow"
               type="text"
@@ -70,14 +65,13 @@ function UserForm(props) {
           </div>
           <div className="flex justify-between">
             <button
-              className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-green-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
+              className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-green-700 hover:scale-105 transition transhtmlForm duration-200 ease-out rounded-lg"
               type="submit"
-              disabled={!isValid()}
             >
               {buttonType}
             </button>
             <button
-              className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-red-800 hover:scale-105 transition transform duration-200 ease-out rounded-lg"
+              className="shadow-md text-white w-40 text-center justify-center px-6 py-1 hover:shadow-xl bg-red-800 hover:scale-105 transition transhtmlForm duration-200 ease-out rounded-lg"
               onClick={() => props.history.push("/")}
             >
               Cancel
@@ -88,7 +82,3 @@ function UserForm(props) {
     </div>
   );
 }
-
-// withAuth comes from context and alow the component to use it
-// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(UserForm);

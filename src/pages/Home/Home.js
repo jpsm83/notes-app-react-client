@@ -16,7 +16,7 @@ class Home extends Component {
 
   // componentDidMount is the first method to execute in a component
   componentDidMount() {
-    this.refreshState();
+    this.refreshState()
   }
 
   refreshState() {
@@ -24,7 +24,6 @@ class Home extends Component {
       .get()
       .then((response) => {
         // axios gives the response in '.data'
-        console.log(response.data);
         this.setState({ notes: response.data });
       })
       .catch((err) => console.error(err));

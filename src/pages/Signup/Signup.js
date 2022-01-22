@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 import { userValidators } from "../../components/Validators/Validators";
@@ -26,9 +26,9 @@ class Signup extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.isValid()) {
-      // props.singup comes from context/auth.context.js - withAuth
+      // props.signup comes from context/auth.context.js - withAuth
       this.props.signup(this.state.fields);
-      this.props.history.push("/");
+      <Redirect to={"/"} />
     }
   }
 
@@ -52,27 +52,19 @@ class Signup extends Component {
     return !Object.keys(errors).some((key) => errors[key]);
   }
 
-  goBack = () => {
-    this.props.history.push("/");
-  };
-
   render(){
     return (
       <div className="flex justify-center">
         <UserForm
-          isValid={() => this.isValid()}
           handleSubmit={(e) => this.handleSubmit(e)}
           handleChange={(e) => this.handleChange(e)}
-          buttonType={this.buttonType}
           {...this.state}
         />
-        <button onClick={() => this.goBack()}>Back</button>
       </div>
     );
   }
   }
-  // withRouter allow us to use history.push
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedIn, user, signup, login, logout, edit
-export default withAuth(withRouter(Signup));
+export default withAuth(Signup)

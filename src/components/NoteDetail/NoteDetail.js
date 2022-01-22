@@ -106,7 +106,7 @@ function NoteDetail({ title, id, description, priority, done, dueDate }) {
             </button>
             <button
               className="shadow-md items-center text-white text-center justify-center px-6 py-1 hover:shadow-xl bg-green-700 hover:scale-105 transition transform duration-200 ease-out rounded-lg">
-              <Link to={`/${id}/update`}>Edit To Do</Link>
+              <Link to={`/edit-note/${id}`}>Edit To Do</Link>
             </button>
           </div>
         </div>

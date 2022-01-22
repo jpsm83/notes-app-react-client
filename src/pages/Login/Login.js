@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 import { userValidators } from "../../components/Validators/Validators";
@@ -24,7 +25,7 @@ class Login extends Component {
     if (this.isValid()) {
       // props.login comes from context/auth.context.js - withAuth
       this.props.login(this.state.fields);
-      this.props.history.push("/");
+      <Redirect to={"/"} />
     }
   };
 
@@ -47,21 +48,14 @@ class Login extends Component {
     return !Object.keys(errors).some((key) => errors[key]);
   }
 
-  goBack = () => {
-    this.props.history.push("/");
-  };
-
   render() {
     return (
       <div className="flex justify-center">
         <UserForm
-          isValid={() => this.isValid()}
           handleSubmit={(e) => this.handleSubmit(e)}
           handleChange={(e) => this.handleChange(e)}
-          buttonType={this.buttonType}
           {...this.state}
         />
-        <button onClick={() => this.goBack()}>Back</button>
       </div>
     );
   }
