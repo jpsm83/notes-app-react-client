@@ -2,6 +2,7 @@
   "name": "notes-app",
   "version": "0.1.0",
   "private": true,
+  "proxy" : "https://notes-app-react-server.vercel.app",
   "dependencies": {
     "@heroicons/react": "^1.0.5",
     "axios": "^0.21.4",

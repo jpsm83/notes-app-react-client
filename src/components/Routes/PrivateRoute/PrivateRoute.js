@@ -5,8 +5,8 @@ import { withAuth } from "../../../context/auth.context";
 // PrivateRoutes alow you to get in especific pages
 // ONLY if you are logged in, example edit user
 function PrivateRoute(routeProps) {
-  // isLoggedIn & isLoading come from withAuth - (context)
-  const { isLoggedIn, isLoading } = routeProps;
+  // isLoggedin & isLoading come from withAuth - (context)
+  const { isLoggedin, isLoading } = routeProps;
 
   // those props comes from this component PrivateRoute
   const { exact, path } = routeProps;
@@ -18,13 +18,13 @@ function PrivateRoute(routeProps) {
       exact={exact}
       path={path}
       render={function (props) {
-        if (!isLoggedIn) return <Redirect to="/login" />;
-        else if (isLoggedIn) return <ComponentToShow {...props} />;
+        if (!isLoggedin) return <Redirect to="/login" />;
+        else if (isLoggedin) return <ComponentToShow {...props} />;
       }}
     />
   );
 }
 
 // withAuth comes from context and alow the component to use it
-// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
+// methods - isLoading, isLoggedin, user, signup, login, logout, edit
 export default withAuth(PrivateRoute);

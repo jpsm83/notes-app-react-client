@@ -1,6 +1,6 @@
+import { Route, Switch } from "react-router";
 import Home from "./pages/Home/Home";
 import Note from "./pages/Note/Note";
-import { Route, Switch } from "react-router";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import EditNote from "./pages/EditNote/EditNote";

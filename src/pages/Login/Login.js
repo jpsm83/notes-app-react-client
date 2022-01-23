@@ -64,5 +64,5 @@ class Login extends Component {
 }
 
 // withAuth comes from context and alow the component to use it
-// methods - isLoading, isLoggedIn, user, signup, login, logout, edit
+// methods - isLoading, isLoggedin, user, signup, login, logout, edit
 export default withAuth(Login);

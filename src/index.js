@@ -10,7 +10,7 @@ ReactDOM.render(
     <Router>
     {/* AuthProvider comes from context and wrap the application
     it allows the app to use all its methods in any component-
-    isLoading, isLoggedIn, user, signup, login, logout, edit */}
+    isLoading, isLoggedin, user, signup, login, logout, edit */}
       <AuthProvider>
         <App />
       </AuthProvider>
