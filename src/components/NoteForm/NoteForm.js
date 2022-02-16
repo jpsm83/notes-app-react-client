@@ -2,9 +2,7 @@ import React from "react";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 
-export default function NoteForm(props) {
-  const { fields, isValid, errors, handleChange, handleSubmit, buttonType } =
-    props;
+export default function NoteForm({ fields, isValid, errors, handleChange, handleSubmit, buttonType }) {
 
   const history = useHistory();
 

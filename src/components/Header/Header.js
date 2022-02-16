@@ -21,15 +21,20 @@ function Header(props) {
         </Link>
         {user ? (
           <div className="flex space-x-4 items-center justify-between">
-            <Link className="flex space-x-4 items-center" to={`/edit-user/${user.id}`}>
+            <Link
+              className="flex space-x-4 items-center"
+              to={`/edit-user/${user.id}`}
+            >
               <p className="font-bold sm:text-xl text-md">
                 Hello {user.username}
               </p>
-              <img
-                src={user.photo}
-                alt="User photo"
-                className="flex justify-center w-10 h-10 overflow-hidden items-center rounded-full"
-              />
+              <div>
+                <img
+                  src={user.photo}
+                  alt="User photo"
+                  className="object-cover cursor-pointer h-12 w-12 flex justify-center flex-shrink-0 overflow-hidden items-center rounded-full"
+                />
+              </div>
             </Link>
             <div
               onClick={logout}

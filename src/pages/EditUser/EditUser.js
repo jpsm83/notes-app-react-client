@@ -1,70 +1,68 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
 import { userValidators } from "../../components/Validators/Validators";
+import { useHistory } from "react-router-dom";
 
-class EditUser extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fields: {
-        username: "",
-        email: "",
-        password: "",
-        photo: ""
-      },
-      buttonType: "Update",
-      errors: {
-        username: null,
-        email: null,
-        password: null,
-        photo: null,
-      },
-    };
-  }
+const EditUser = ({ edit, user }) => {
+  const [fields, setFields] = useState({
+    username: "",
+    email: "",
+    password: "",
+    photo: "",
+  });
+  const [errors, setErrors] = useState({
+    username: null,
+    email: null,
+    password: null,
+    photo: null,
+  });
 
-  handleSubmit(event) {
-    event.preventDefault();
-    if (this.isValid()) {
-      // props.edit comes from context/auth.context.js - withAuth
-      this.props.edit(this.state.fields);
-      this.props.history.push("/");
+  const history = useHistory();
+
+  useEffect(() => {
+    setFields(user);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValid()) {
+      // edit comes from context/auth.context.js - withAuth
+      edit(fields);
+      history.push("/");
     }
-  }
+  };
 
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      fields: {
-        ...this.state.fields,
-        [name]: value,
-      },
-      errors: {
-        ...this.state.errors,
-        [name]: userValidators[name](value),
-      },
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFields({
+      ...fields,
+      [name]: value,
     });
-  }
+    setErrors({
+      ...errors,
+      [name]: userValidators[name](value),
+    });
+  };
 
-  isValid() {
-    const { errors } = this.state;
+  const isValid = () => {
     return !Object.keys(errors).some((key) => errors[key]);
-  }
+  };
 
-  render() {
-    return (
-      <div className="flex justify-center">
-        <UserForm
-          isValid={() => this.isValid()}
-          handleSubmit={(e) => this.handleSubmit(e)}
-          handleChange={(e) => this.handleChange(e)}
-          {...this.state}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="flex justify-center">
+      <UserForm
+        isValid={() => isValid()}
+        handleSubmit={(e) => handleSubmit(e)}
+        handleChange={(e) => handleChange(e)}
+        buttonType="Update"
+        fields={{ ...fields }}
+        errors={{ ...errors }}
+      />
+    </div>
+  );
+};
 
 // withAuth comes from context and alow the component to use it
 // methods - isLoading, isLoggedin, user, signup, login, logout, edit
