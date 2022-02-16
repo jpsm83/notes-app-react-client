@@ -57,9 +57,9 @@ const CreateNote = () => {
     <div className="flex justify-center">
       <NoteForm
         isValid={() => isValid()}
-        buttonType="Create"
         handleSubmit={(e) => handleSubmit(e)}
         handleChange={(e) => handleChange(e)}
+        buttonType="Create"
         fields={{ ...fields }}
         errors={{ ...errors }}
       />

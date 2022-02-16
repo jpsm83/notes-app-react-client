@@ -41,9 +41,8 @@ const EditNote = (props) => {
 
   const updateNote = () => {
     const id = props.match.params.id;
-    const uploadedData = fields;
     noteService
-      .updateOne(id, uploadedData)
+      .updateOne(id, fields)
       .then(() => {
         history.push("/");
       })
