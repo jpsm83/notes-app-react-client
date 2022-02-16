@@ -5,7 +5,7 @@ const { Consumer, Provider } = React.createContext();
 
 class AuthProvider extends React.Component {
   state = {
-    isLoggedIn: false,
+    isLoggedin: false,
     isLoading: true,
     user: null,
   };
@@ -15,16 +15,16 @@ class AuthProvider extends React.Component {
   // componentDidMount is ALWAYS the first function to execute
   async componentDidMount() {
     try {
-      const response = await this.authService.isLoggedIn();
+      const response = await this.authService.isLoggedin();
       if (response) {
         this.setState({
-          isLoggedIn: true,
+          isLoggedin: true,
           isLoading: false,
           user: response.data,
         });
       }
     } catch (err) {
-      this.setState({ isLoggedIn: false, isLoading: false, user: null });
+      this.setState({ isLoggedin: false, isLoading: false, user: null });
     }
   }
 
@@ -33,10 +33,10 @@ class AuthProvider extends React.Component {
     try {
       const response = await this.authService.signup(data);
       if (response) {
-        this.setState({ isLoggedIn: true, user: response.data });
+        this.setState({ isLoggedin: true, user: response.data });
       }
     } catch (err) {
-      this.setState({ isLoggedIn: false, user: null });
+      this.setState({ isLoggedin: false, user: null });
     }
   };
 
@@ -45,15 +45,15 @@ class AuthProvider extends React.Component {
     this.authService
       .login(data)
       .then((response) =>
-        this.setState({ isLoggedIn: true, user: response.data })
+        this.setState({ isLoggedin: true, user: response.data })
       )
-      .catch(() => this.setState({ isLoggedIn: false, user: null }));
+      .catch(() => this.setState({ isLoggedin: false, user: null }));
   };
 
   logout = () => {
     this.authService
       .logout()
-      .then(() => this.setState({ isLoggedIn: false, user: null }))
+      .then(() => this.setState({ isLoggedin: false, user: null }))
       .catch((error) => console.error(error));
   };
 
@@ -65,7 +65,7 @@ class AuthProvider extends React.Component {
   };
 
   render() {
-    const { isLoggedIn, isLoading, user } = this.state;
+    const { isLoggedin, isLoading, user } = this.state;
 
     if (isLoading) return <p>Loading...</p>;
 
@@ -73,7 +73,7 @@ class AuthProvider extends React.Component {
       <Provider
         value={{
           isLoading,
-          isLoggedIn,
+          isLoggedin,
           user,
           signup: this.signup,
           login: this.login,
@@ -92,20 +92,20 @@ class AuthProvider extends React.Component {
 // WrappedComponent are any component that needs to connect to this context (consumer component)
 
 // once a component connected to this context it can use all the methods for
-// authentication (provider) - isLoading, isLoggedIn, user, signup, login, logout, edit
+// authentication (provider) - isLoading, isLoggedin, user, signup, login, logout, edit
 const withAuth = (WrappedComponent) => {
   return function (props) {
     return (
       <Consumer>
         {/* value comes from provider return */}
         {(value) => {
-          const { isLoading, isLoggedIn, user, signup, login, logout, edit } =
+          const { isLoading, isLoggedin, user, signup, login, logout, edit } =
             value;
 
           // We pass the context props and also the props from the component that are recieving the context
           return (
             <WrappedComponent
-              isLoggedIn={isLoggedIn}
+              isLoggedin={isLoggedin}
               isLoading={isLoading}
               user={user}
               signup={signup}
