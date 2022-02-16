@@ -10,7 +10,7 @@ export default function NoteForm({ fields, isValid, errors, handleChange, handle
     <div className="flex w-full flex-col bg-blue-200 m-10 shadow-lg space-y-4 rounded-lg p-5">
       <form
         className="flex flex-col p-5 space-y-3 bg-gray-100 rounded-lg"
-        onSubmit={(event) => handleSubmit(event)}
+        onSubmit={(e) => handleSubmit(e)}
       >
         <div className="flex justify-end">
           <label className="font-bold text-yellow-800" htmlFor="dueDate">
@@ -21,7 +21,7 @@ export default function NoteForm({ fields, isValid, errors, handleChange, handle
             type="date"
             name="dueDate"
             value={moment(new Date(fields.dueDate)).format("YYYY-MM-DD")}
-            onChange={(event) => handleChange(event)}
+            onChange={(e) => handleChange(e)}
           />
           {errors.dueDate && (
             <p className="errorInputs sm:text-md">{errors.dueDate}</p>
@@ -36,7 +36,7 @@ export default function NoteForm({ fields, isValid, errors, handleChange, handle
             type="text"
             name="title"
             value={fields.title}
-            onChange={(event) => handleChange(event)}
+            onChange={(e) => handleChange(e)}
           />
           {errors.title && (
             <p className="errorInputs sm:text-md">{errors.title}</p>
@@ -51,7 +51,7 @@ export default function NoteForm({ fields, isValid, errors, handleChange, handle
             type="text"
             name="description"
             value={fields.description}
-            onChange={(event) => handleChange(event)}
+            onChange={(e) => handleChange(e)}
           />
           {errors.description && (
             <p className="errorInputs sm:text-md">{errors.description}</p>

@@ -35,7 +35,6 @@ const CreateNote = () => {
         history.push("/");
       })
       .catch((error) => console.log(error));
-    history.push("/");
   };
 
   const handleChange = (e) => {
