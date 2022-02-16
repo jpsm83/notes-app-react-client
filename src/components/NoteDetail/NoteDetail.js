@@ -20,7 +20,7 @@ export default function NoteDetail({
     noteService
       .deleteOne(id)
       .then(() => {
-        refreshState();
+        history.push("/")
       })
       .catch((error) => {
         console.log(error);

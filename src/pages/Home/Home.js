@@ -4,17 +4,12 @@ import NoteCard from "../../components/NoteCard/NoteCard";
 import { withAuth } from "../../context/auth.context";
 import NoteService from "../../services/note.service";
 
-const Home = (props) => {
+const Home = ({ user }) => {
   const [notes, setNotes] = useState([]);
 
   // connection with RecipeService to be able to use all it services
   // recipe.service.js is the bridge to connect frontend with backend
   const noteService = new NoteService();
-
-  // user come from context/auth.context.js
-  // it can be use in any component because it is exported as AuthProvider
-  // and wrap all the aplication in its root index.js
-  const { user } = props;
 
   // useEffect is the first method to execute in a component
   useEffect(() => {
@@ -32,11 +27,12 @@ const Home = (props) => {
   };
 
   const displayNoteCards = () => {
-    const userId = props.user.id;
+    const userId = user.id;
     let organizedNotes = [...notes].sort(
       (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
     );
     return organizedNotes.map((note) => {
+      // the username in notes comes with the id of the user
       if (note.username === userId) {
         return (
           <NoteCard
