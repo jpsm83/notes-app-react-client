@@ -2,8 +2,9 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 export default function UserForm(props) {
+  const { handleSubmit, handleChange, errors, fields, buttonType, isValid } =
+    props;
 
-  const { handleSubmit, handleChange, errors, fields, buttonType, isValid } = props;
   const history = useHistory();
 
   return (
@@ -70,6 +71,7 @@ export default function UserForm(props) {
               value={fields.photo}
               name="photo"
               onChange={handleChange}
+              placeholder={"URL Please"}
             />
             {errors.photo && (
               <p className="errorInputs sm:text-md">{errors.photo}</p>

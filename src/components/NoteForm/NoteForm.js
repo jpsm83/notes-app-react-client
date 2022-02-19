@@ -3,16 +3,16 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 
 export default function NoteForm(props) {
+  const { fields, isValid, errors, handleChange, handleSubmit, buttonType } =
+    props;
 
-  const { fields, isValid, errors, handleChange, handleSubmit, buttonType } = props;
-  
   const history = useHistory();
 
   return (
     <div className="flex w-full flex-col bg-blue-200 m-10 shadow-lg space-y-4 rounded-lg p-5">
       <form
         className="flex flex-col p-5 space-y-3 bg-gray-100 rounded-lg"
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={handleSubmit}
       >
         <div className="flex justify-end">
           <label className="font-bold text-yellow-800" htmlFor="dueDate">
@@ -23,7 +23,7 @@ export default function NoteForm(props) {
             type="date"
             name="dueDate"
             value={moment(new Date(fields.dueDate)).format("YYYY-MM-DD")}
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
           {errors.dueDate && (
             <p className="errorInputs sm:text-md">{errors.dueDate}</p>
@@ -38,7 +38,7 @@ export default function NoteForm(props) {
             type="text"
             name="title"
             value={fields.title}
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
           {errors.title && (
             <p className="errorInputs sm:text-md">{errors.title}</p>
@@ -53,7 +53,7 @@ export default function NoteForm(props) {
             type="text"
             name="description"
             value={fields.description}
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
           {errors.description && (
             <p className="errorInputs sm:text-md">{errors.description}</p>

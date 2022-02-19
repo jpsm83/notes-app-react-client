@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import UserForm from "../../components/UserForm/UserForm";
 import { withAuth } from "../../context/auth.context";
@@ -28,7 +27,6 @@ const EditUser = ({ edit, user }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValid()) {
-      // edit comes from context/auth.context.js - withAuth
       edit(fields);
       history.push("/");
     }
